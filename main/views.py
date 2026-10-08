@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.clickjacking import xframe_options_sameorigin
+from django.core.mail import send_mail
+from django.conf import settings
 import json
 
 
@@ -195,8 +197,21 @@ def contact_form(request):
         if not all([name, email, message]):
             return JsonResponse({'success': False, 'error': 'All fields are required.'}, status=400)
 
-        # In production, you'd send an email or save to database here
-        print(f"Contact form submission: {name} ({email}): {message}")
+        subject = f"Portfolio Contact Form: {name}"
+        email_message = f"New message from your portfolio website!\n\nName: {name}\nEmail: {email}\n\nMessage:\n{message}"
+        
+        try:
+            send_mail(
+                subject,
+                email_message,
+                settings.EMAIL_HOST_USER,
+                ['ommishra052@gmail.com'],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"Failed to send email: {e}")
+            return JsonResponse({'success': False, 'error': 'Failed to send email. Server configuration error.'}, status=500)
+
         return JsonResponse({'success': True, 'message': 'Thank you! I will get back to you soon.'})
 
     except json.JSONDecodeError:
