@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Om Mishra — Portfolio Map & Knowledge Graph</title>
+<script>
+  if (window.self !== window.top) {
+      document.documentElement.classList.add('is-embedded');
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;500;600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --ink: #e6edf3;
+  --mute: #8b949e;
+  --panel: #161b22;
+  --line: #30363d;
+  --quantum: #a090f5;
+  --ml: #4fb9ab;
+  --agentic: #ee8399;
+  --bio: #e5ae52;
+  --space: #7fb0ec;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+:root[data-theme="light"] {
+  --bg: #eef1f5;
+  --ink: #1c2430;
+  --mute: #5d6b7c;
+  --panel: #fbfcfd;
+  --line: #b9c3cf;
+  --quantum: #6a58d8;
+  --ml: #17857a;
+  --agentic: #c4435e;
+  --bio: #b57712;
+  --space: #3b72b8;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+html.is-embedded header {
+  display: none !important;
+}
+html.is-embedded body,
+html.is-embedded #app {
+  background: transparent !important;
+}
+html.is-embedded #detail {
+  top: 16px !important;
+  height: calc(100% - 32px) !important;
+}
+#app {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+header {
+  position: absolute;
+  left: 20px;
+  top: 16px;
+  right: 360px;
+  z-index: 10;
+  pointer-events: auto;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mute);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  transition: all 0.2s ease;
+}
+.back-link:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 8%, var(--panel));
+}
+.theme-btn {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--mute);
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.theme-btn:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+h1 {
+  font: 500 24px/1.15 "Newsreader", Georgia, serif;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+#crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--mute);
+}
+#crumbs button {
+  all: unset;
+  cursor: pointer;
+  color: var(--mute);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+#crumbs button:hover {
+  color: var(--ink);
+}
+#crumbs button:focus-visible {
+  outline: 2px solid var(--ink);
+}
+#crumbs span.cur {
+  color: var(--ink);
+  font-weight: 500;
+}
+#stage {
+  position: absolute;
+  inset: 0;
+}
+svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+svg line {
+  stroke: var(--line);
+  stroke-width: 1.5;
+  animation: f .5s both;
+}
+@keyframes f {
+  from { opacity: 0; }
+}
+.n {
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px solid var(--c);
+  background: color-mix(in srgb, var(--c) 16%, var(--panel));
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  line-height: 1.15;
+  transition: transform .55s cubic-bezier(.2, .8, .2, 1), width .55s, height .55s, opacity .4s, box-shadow .2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+.n.field {
+  background: color-mix(in srgb, var(--c) 28%, var(--panel));
+  font: 500 17px/1.15 "Newsreader", Georgia, serif;
+}
+.n.skill {
+  background: var(--panel);
+  border-style: dashed;
+  font-size: 12px;
+}
+.n.project {
+  font-size: 12px;
+  font-weight: 500;
+}
+.n small {
+  display: block;
+  color: var(--mute);
+  font-size: 11px;
+  margin-top: 3px;
+}
+.n.sel {
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 40%, transparent), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.n:hover, .n:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 45%, transparent), 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+#panel {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  bottom: 16px;
+  width: 324px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  overflow: auto;
+  box-sizing: border-box;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 10;
+}
+#panel h2 {
+  font: 500 22px/1.2 "Newsreader", Georgia, serif;
+  margin: 6px 0 10px;
+  letter-spacing: -0.01em;
+}
+#panel .t {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--mute);
+  font-family: "JetBrains Mono", monospace;
+}
+#panel p {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+#panel h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mute);
+  margin: 16px 0 8px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink) 4%, var(--panel));
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.chip:hover, .chip:focus-visible {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 12%, var(--panel));
+  outline: none;
+}
+a.link {
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid var(--c, var(--ink));
+  border-radius: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  word-break: break-all;
+  background: color-mix(in srgb, var(--c, var(--ink)) 8%, transparent);
+  transition: all 0.2s ease;
+}
+a.link:hover {
+  background: color-mix(in srgb, var(--c, var(--ink)) 18%, transparent);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--c, var(--ink)) 25%, transparent);
+}
+.none {
+  color: var(--mute);
+  font-size: 13px;
+}
+svg path.e {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+  opacity: .75;
+  transition: stroke-width .2s, opacity .2s;
+}
+svg path.e.sel {
+  stroke-width: 4;
+  stroke-dasharray: none;
+  opacity: 1;
+}
+svg path.hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 20;
+  pointer-events: stroke;
+  cursor: pointer;
+}
+@media (max-width: 760px) {
+  header {
+    right: 14px;
+    left: 14px;
+  }
+  #panel {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 12px;
+    width: auto;
+    height: 40%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .n { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stage"><svg id="ln"></svg></div>
+  <header>
+    <div class="header-top">
+      <a href="/" class="back-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <span>Back to Portfolio</span>
+      </a>
+      <button id="themeToggle" class="theme-btn" aria-label="Toggle theme">◐</button>
+    </div>
+    <h1>Om Mishra — portfolio map</h1>
+    <div id="crumbs"></div>
+  </header>
+  <aside id="panel" aria-live="polite"></aside>
+</div>
+
+<script>
+const F = {
+  quantum: ["Quantum computing", "Quantum ML, annealing and sensing, from simulation to hardware."],
+  ml: ["Machine learning", "Models for signals, images and tabular data, with a focus on uncertainty and explanations."],
+  agentic: ["Agentic AI & LLMs", "Multi-agent reasoning and LLM-based judging."],
+  bio: ["Biomedical & health", "EEG, CPR sensing and cancer detection."],
+  space: ["Space & astronomy", "Astrophysical prediction and space-systems design."]
+};
+
+const S = {
+  mstage: ["Multi-stage ML", "Staged pipeline for predicting redshift."],
+  gnn: ["Graph neural network", "Used in the quasar redshift framework."],
+  hyb: ["Hybrid attention", "AG-XCaps / H-SNN attention models in the galaxy ensemble."],
+  rg: ["ResNet-GRU", "Part of the galaxy interaction ensemble."],
+  lime: ["LIME", "Explains individual model predictions."],
+  gmat: ["GMAT", "Orbital simulation software."],
+  mat: ["MATLAB", "Simulation used to validate the debris module."],
+  ion: ["Ion propulsion design", "Solar-powered ion propulsion module for multi-debris remediation."],
+  ising: ["Ising Hamiltonian", "Drawdown-adaptive formulation of intraday long-short allocation."],
+  sa: ["Simulated annealing", "Classical solver, quantum-annealing-ready."],
+  vqc: ["VQC", "Variational quantum classifier."],
+  qsvm: ["Q-SVM", "Quantum support vector machine."],
+  qnn: ["QNN", "Quantum neural network."],
+  base: ["11 classical baselines", "Classical ML models used for comparison."],
+  nvs: ["NV-center sensing", "Mapping free radicals; you have access to NV hardware."],
+  dl: ["Deep learning", "Relates the free-radical map to cancer cells."],
+  xai: ["XAI", "Explains the role of free radicals in malignant vs non-malignant behaviour."],
+  seq: ["GRU-LSTM", "Recurrent branch of the EEG ensemble."],
+  tr: ["Transformer", "Attention branch of the EEG ensemble."],
+  unet: ["UNet", "Segmentation branch of the EEG ensemble."],
+  mcd: ["Monte Carlo Dropout", "Uncertainty estimate for seizure predictions."],
+  lg: ["LangGraph", "Orchestrates the agents."],
+  api: ["Anthropic API", "Model calls inside the agent system."],
+  deb: ["Debate loop", "Agents argue toward an answer."],
+  vote: ["Voting ensemble", "Agents vote on an answer."],
+  bge: ["BGE-M3", "Multilingual embedder for candidate retrieval."],
+  lora: ["LoRA-tuned LLM judge", "Judges only the ambiguous middle band."],
+  gbm: ["Gradient-boosted blender", "Combines the LLM score with exact-match features."],
+  lidar: ["LiDAR + ARKit depth", "Compression depth from the iPhone scene-depth API."],
+  cnn: ["CNN", "Powers the CPR guidance app."],
+  fus: ["Kinematic–depth fusion", "Still being explored."]
+};
+
+const Q = "https://www.sciencedirect.com/science/article/pii/S1877050926018545";
+
+const P = {
+  quasar: ["Quasar redshift prediction", "Paper", "Multi-Stage ML Framework for Predicting Quasar Redshifts. ICMLDE 2025, Elsevier Procedia CS.", ["ml", "space"], Q, ["mstage", "gnn"]],
+  galaxy: ["Galaxy interaction prediction", "Paper", "Explainable Galaxy Interaction Prediction with Hybrid Attention Mechanisms (ArXiv 2601.08872).", ["ml", "space"], "https://arxiv.org/abs/2601.08872", ["hyb", "rg", "lime"]],
+  debris: ["Space debris remediation", "Paper", "Solar-powered ion propulsion module for multi-debris remediation. IEEE SPACE 2026 (ArXiv 2601.12830).", ["space"], "https://arxiv.org/abs/2601.12830", ["ion", "gmat", "mat"]],
+  ising: ["Ising portfolio optimization", "Paper", "Drawdown-adaptive Ising Hamiltonian for intraday long-short portfolios. Adapted as a Bengaluru Tech Summit 2026 abstract.", ["quantum"], "https://github.com/om520/portfolio-optimization-using-Ising-model-model", ["ising", "sa"]],
+  qeids: ["Quantum intrusion detection", "Project", "Quantum-Enhanced Intrusion Detection System, with Chiranjib Sur at Shell.", ["quantum", "ml"], "", ["vqc", "qsvm", "qnn", "base"]],
+  qnr: ["Quantum network routing", "Project", "Ongoing.", ["quantum"], "", []],
+  nv: ["NV-center cancer detection", "Project", "Free-radical mapping with NV centers, deep learning and XAI. Fellowship proposal for Qmet PARIMANA 2026.", ["quantum", "bio", "ml"], "", ["nvs", "dl", "xai"]],
+  eeg: ["EEG epilepsy detection", "Project", "Biologically-grounded seizure detection on the CHB-MIT dataset with a deep ensemble and uncertainty estimates.", ["ml", "bio"], "https://github.com/om520/EEG_BioEnsemble", ["seq", "tr", "unet", "mcd"]],
+  mas: ["Multi-agent reasoning", "Project", "Debate loop, voting ensemble and hybrid orchestrator. Open gap: debate vs voting on correlated-error cases in clinical/EEG domains.", ["agentic"], "", ["lg", "api", "deb", "vote"]],
+  ber: ["Business entity resolution", "Project", "Match business records across three sources with no shared IDs.", ["agentic", "ml"], "", ["bge", "lora", "gbm"]],
+  sphu: ["Sphuranex CPR device", "Startup", "CPR device startup where you are co-founder and Technical Lead.", ["bio", "ml"], "", ["lidar", "cnn", "fus"]]
+};
+
+const RW = [
+  ["quasar", "galaxy", "Both apply ML to astronomical data: redshift prediction and galaxy-interaction prediction."],
+  ["galaxy", "eeg", "Both use GRU-based ensembles: ResNet-GRU in the galaxy model, GRU-LSTM in the EEG model."],
+  ["galaxy", "nv", "Both pair a deep model with an explanation method: LIME in the galaxy model, XAI in the NV-center project."],
+  ["eeg", "mas", "The multi-agent project's open research gap is benchmarking debate vs voting on correlated-error cases in clinical/EEG domains."],
+  ["mas", "ber", "Both use LLMs as parts of a larger pipeline: agents on the Anthropic API, and a LoRA-tuned LLM judge."],
+  ["eeg", "sphu", "Both turn biomedical sensor signals into a decision."],
+  ["eeg", "nv", "Both apply deep learning to biomedical data."],
+  ["ising", "qeids", "Both bring quantum-computing methods to a classical problem: portfolio allocation and intrusion detection."]
+];
+
+const RS = {
+  quasar: [["mstage", "gnn", "The GNN is used within the multi-stage framework."]],
+  galaxy: [["hyb", "rg", "Combined in one ensemble."], ["lime", "hyb", "LIME explains the ensemble's predictions."]],
+  debris: [["ion", "gmat", "The propulsion design is validated by GMAT simulation."], ["ion", "mat", "The propulsion design is validated by MATLAB simulation."], ["gmat", "mat", "Two simulators used together to validate the design."]],
+  ising: [["ising", "sa", "Annealing searches for low-energy solutions of the Hamiltonian."]],
+  qeids: [["vqc", "qsvm", "Quantum models compared with each other."], ["qsvm", "qnn", "Quantum models compared with each other."], ["qnn", "base", "The quantum models are benchmarked against the 11 classical baselines."]],
+  nv: [["nvs", "dl", "The free-radical map from NV sensing is the input to the deep model."], ["dl", "xai", "XAI explains what the deep model learned about free radicals."]],
+  eeg: [["seq", "tr", "Branches of one ensemble."], ["tr", "unet", "Branches of one ensemble."], ["mcd", "seq", "Monte Carlo Dropout adds an uncertainty estimate to the ensemble."], ["mcd", "tr", "Monte Carlo Dropout adds an uncertainty estimate to the ensemble."], ["mcd", "unet", "Monte Carlo Dropout adds an uncertainty estimate to the ensemble."]],
+  mas: [["lg", "api", "LangGraph orchestrates calls to the Anthropic API."], ["deb", "vote", "The two strategies being benchmarked against each other."]],
+  ber: [["bge", "lora", "Retrieval narrows the candidates; the LLM judges the ambiguous ones."], ["lora", "gbm", "The blender combines the LLM score with exact-match features."]],
+  sphu: [["lidar", "cnn", "The guidance app checks compression consistency and depth using LiDAR."], ["lidar", "fus", "Depth is one side of the fusion being explored."]]
+};
+
+let EDG = [];
+const lab = id => {
+  const [t, k] = id.split(":");
+  return t === "f" ? F[k][0] : t === "p" ? P[k][0] : S[k][0];
+};
+
+function edges(o) {
+  const E = [];
+  if (!st.f) {
+    const ks = Object.keys(F);
+    for (let i = 0; i < ks.length; i++) {
+      for (let j = i + 1; j < ks.length; j++) {
+        const sh = Object.keys(P).filter(k => P[k][3].includes(ks[i]) && P[k][3].includes(ks[j]));
+        if (sh.length) {
+          E.push({
+            a: "f:" + ks[i],
+            b: "f:" + ks[j],
+            reason: "Shared works: " + sh.map(k => P[k][0]).join(", ") + "."
+          });
+        }
+      }
+    }
+  } else if (!st.p) {
+    RW.forEach(([a, b, r]) => E.push({ a: "p:" + a, b: "p:" + b, reason: r }));
+  } else {
+    (RS[st.p] || []).forEach(([a, b, r]) => E.push({ a: "s:" + a, b: "s:" + b, reason: r }));
+  }
+  return E.filter(e => o[e.a] && o[e.b]).map(e => ({
+    ...e,
+    id: e.a + "|" + e.b,
+    la: lab(e.a),
+    lb: lab(e.b)
+  }));
+}
+
+const st = { f: null, p: null, s: null, e: null };
+const stage = document.getElementById("stage");
+const ln = document.getElementById("ln");
+const els = {};
+
+const cl = (v, a, b) => Math.max(a, Math.min(b, v));
+
+function up() {
+  if (st.e) st.e = null;
+  else if (st.s) st.s = null;
+  else if (st.p) st.p = null;
+  else st.f = null;
+  render();
+}
+
+function layout() {
+  const W = innerWidth;
+  const H = innerHeight;
+  const m = W <= 760;
+  const sw = m ? W : W - 340;
+  const sh = m ? H * 0.6 : H;
+  const top = m ? 110 : 90;
+  const cx = sw / 2;
+  const cy = top + (sh - top) / 2;
+  const R = Math.min(sw, sh - top) / 2 - 10;
+  const o = {};
+
+  const ring = (items, rad, r, mk) => items.forEach((k, i) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / items.length;
+    o[mk(k)] = { x: cx + rad * Math.cos(a), y: cy + rad * Math.sin(a), r };
+  });
+
+  const rc = cl(R * 0.22, 38, 68);
+  const rr = cl(R * 0.16, 32, 52);
+
+  if (!st.f) {
+    ring(Object.keys(F), R * 0.62, cl(R * 0.2, 42, 70), k => "f:" + k);
+  } else if (!st.p) {
+    o["f:" + st.f] = { x: cx, y: cy, r: rc };
+    ring(Object.keys(P).filter(k => P[k][3].includes(st.f)), R * 0.72, rr, k => "p:" + k);
+  } else {
+    o["p:" + st.p] = { x: cx, y: cy, r: rc };
+    ring(P[st.p][5], R * 0.72, rr, k => "s:" + k);
+  }
+  return { o, cx, cy };
+}
+
+function node(id) {
+  let e = els[id];
+  if (e) return e;
+  const [t, k] = id.split(":");
+  e = document.createElement("button");
+  e.className = "n " + ({ f: "field", p: "project", s: "skill" })[t];
+  e.dataset.id = id;
+  const text = t === "f" ? F[k][0] : t === "p" ? P[k][0] : S[k][0];
+  e.innerHTML = text + (t === "f" ? `<small>${Object.keys(P).filter(x => P[x][3].includes(k)).length} works</small>` : "");
+  e.style.opacity = 0;
+  e.onclick = () => click(id);
+  stage.appendChild(e);
+  els[id] = e;
+  return e;
+}
+
+function col(id) {
+  const [t, k] = id.split(":");
+  return t === "f" ? k : st.f || P[st.p || ""]?.[3][0] || "ml";
+}
+
+function render() {
+  const { o, cx, cy } = layout();
+  Object.keys(o).forEach(id => {
+    const e = node(id);
+    const d = o[id];
+    e.style.setProperty("--c", `var(--${col(id)})`);
+    if (!e.dataset.in) {
+      e.dataset.in = 1;
+      e.style.transform = `translate(${cx - d.r}px, ${cy - d.r}px)`;
+      e.style.width = e.style.height = 2 * d.r + "px";
+      e.offsetWidth;
+    }
+    e.style.transform = `translate(${d.x - d.r}px, ${d.y - d.r}px)`;
+    e.style.width = e.style.height = 2 * d.r + "px";
+    e.style.opacity = 1;
+    e.style.pointerEvents = "auto";
+    e.dataset.on = 1;
+    e.classList.toggle("sel", "s:" + st.s === id);
+  });
+
+  Object.keys(els).forEach(id => {
+    if (!o[id]) {
+      const e = els[id];
+      e.style.opacity = 0;
+      e.style.pointerEvents = "none";
+      e.dataset.on = "";
+      e.tabIndex = -1;
+    } else {
+      els[id].tabIndex = 0;
+    }
+  });
+
+  const c = st.s ? "p:" + st.p : st.p ? "p:" + st.p : st.f ? "f:" + st.f : null;
+  EDG = edges(o);
+  const ec = `var(--${st.f || "mute"})`;
+
+  ln.innerHTML = (c ? Object.keys(o).filter(i => i !== c).map(i => `<line x1="${o[c].x}" y1="${o[c].y}" x2="${o[i].x}" y2="${o[i].y}"/>`).join("") : "") +
+    EDG.map(e => {
+      const A = o[e.a];
+      const B = o[e.b];
+      const d = `M${A.x} ${A.y}Q${(A.x + B.x) * .325 + cx * .35} ${(A.y + B.y) * .325 + cy * .35} ${B.x} ${B.y}`;
+      return `<path class="e${st.e === e.id ? " sel" : ""}" d="${d}" style="--c:${ec}"/><path class="hit" d="${d}" data-e="${e.id}"><title>${e.la} ↔ ${e.lb}</title></path>`;
+    }).join("");
+
+  crumbs();
+  panel();
+}
+
+function click(id) {
+  const [t, k] = id.split(":");
+  st.e = null;
+  if (t === "f") {
+    st.f === k ? up() : (st.f = k, st.p = st.s = null);
+  } else if (t === "p") {
+    st.p === k ? up() : (st.p = k, st.s = null);
+  } else {
+    st.s = k;
+  }
+  render();
+}
+
+function crumbs() {
+  const a = [["All fields", () => { st.f = st.p = st.s = null; }]];
+  if (st.f) a.push([F[st.f][0], () => { st.p = st.s = null; }]);
+  if (st.p) a.push([P[st.p][0], () => { st.s = null; }]);
+  if (st.s) a.push([S[st.s][0], () => {}]);
+
+  const E = EDG.find(x => x.id === st.e);
+  if (E) a.push([E.la + " ↔ " + E.lb]);
+
+  const c = document.getElementById("crumbs");
+  c.innerHTML = "";
+  a.forEach(([l, fn], i) => {
+    if (i) c.append(" › ");
+    const last = i === a.length - 1;
+    const b = document.createElement(last ? "span" : "button");
+    b.textContent = l;
+    if (last) {
+      b.className = "cur";
+    } else {
+      b.onclick = () => { fn(); st.e = null; render(); };
+    }
+    c.append(b);
+  });
+}
+
+const chip = (id, l) => `<button class="chip" data-id="${id}">${l}</button>`;
+
+function panel() {
+  const p = document.getElementById("panel");
+  let h;
+  if (st.e) {
+    const e = EDG.find(x => x.id === st.e);
+    h = e ? `<div class="t">Connection</div><h2>${e.la} ↔ ${e.lb}</h2><p>${e.reason}</p><h3>Open one end</h3><div class="chips">${chip(e.a, e.la)}${chip(e.b, e.lb)}</div>` : "";
+  } else if (st.s) {
+    const w = P[st.p];
+    const c = `var(--${st.f || w[3][0]})`;
+    h = `<div class="t">Skill used in ${w[0]}</div><h2>${S[st.s][0]}</h2><p>${S[st.s][1]}</p><h3>Link to the work</h3>${w[4] ? `<a class="link" style="--c:${c}" href="${w[4]}" target="_blank" rel="noopener">${w[0]}<br><span class="none" style="font-size:11px;">${w[4]}</span></a>` : `<div class="none">No public link on file yet for ${w[0]}. Send it and it goes here.</div>`}<h3>Other skills in this work</h3><div class="chips">${w[5].filter(k => k !== st.s).map(k => chip("s:" + k, S[k][0])).join("")}</div>`;
+  } else if (st.p) {
+    const w = P[st.p];
+    h = `<div class="t">${w[1]}</div><h2>${w[0]}</h2><p>${w[2]}</p><h3>Skills used — pick one for details</h3><div class="chips">${w[5].map(k => chip("s:" + k, S[k][0])).join("") || '<span class="none">No skills listed yet.</span>'}</div><h3>Fields</h3><div class="chips">${w[3].map(k => chip("f:" + k, F[k][0])).join("")}</div>`;
+  } else if (st.f) {
+    h = `<div class="t">Field</div><h2>${F[st.f][0]}</h2><p>${F[st.f][1]}</p><h3>Works in this field</h3><div class="chips">${Object.keys(P).filter(k => P[k][3].includes(st.f)).map(k => chip("p:" + k, P[k][0])).join("")}</div>`;
+  } else {
+    h = `<div class="t">Start here</div><h2>Pick a field</h2><p>Field → work → skill → link. Each click opens the next level. Click the centre node or press Esc to go back.</p><div class="chips">${Object.keys(F).map(k => chip("f:" + k, F[k][0])).join("")}</div>`;
+  }
+
+  if (!st.e && EDG.length) {
+    h += '<p class="none" style="margin-top:16px; border-top:1px solid var(--line); padding-top:12px;">Dashed lines connect related nodes. Click any dashed line to inspect cross-domain relationships.</p>';
+  }
+
+  p.innerHTML = h;
+  p.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+    const [t, k] = b.dataset.id.split(":");
+    st.e = null;
+    if (t === "f") {
+      st.f = k; st.p = st.s = null;
+    } else if (t === "p") {
+      st.p = k; st.s = null;
+      if (!st.f || !P[k][3].includes(st.f)) st.f = P[k][3][0];
+    } else {
+      st.s = k;
+    }
+    render();
+  });
+}
+
+ln.addEventListener("click", ev => {
+  const h = ev.target.closest(".hit");
+  if (h) {
+    st.e = h.dataset.e;
+    render();
+  }
+});
+
+addEventListener("keydown", e => {
+  if (e.key === "Escape") up();
+});
+
+addEventListener("resize", render);
+
+// Theme Toggle
+const themeBtn = document.getElementById("themeToggle");
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme") || "dark";
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
