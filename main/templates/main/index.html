@@ -370,6 +370,7 @@
                     </div>
                 </div>
                 <form class="contact__form glass-card" id="contactForm" data-animate="fade-up" data-delay="200">
+                    {% csrf_token %}
                     <div class="form__group">
                         <label for="contactName" class="form__label">Name</label>
                         <input type="text" id="contactName" name="name" class="form__input" required placeholder="Your name">
